@@ -55,5 +55,27 @@ export default {
       ],
       validation: (Rule: any) => Rule.unique(),
     },
+    {
+      title: 'Bookmarks',
+      name: 'bookmarks',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [
+            {
+              type: 'post',
+            },
+          ],
+        },
+      ],
+      validation: (Rule: any) => Rule.unique(),
+    },
   ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'username',
+    },
+  },
 }
