@@ -17,7 +17,7 @@ export default function NavButton({ fillIcon, outlineIcon, path }: Props) {
       {isCurrentPage ? (
         fillIcon
       ) : (
-        <Link href={`${path}`} className="">
+        <Link href={`${path}`} className="block hover:hidden">
           {outlineIcon}
         </Link>
       )}
