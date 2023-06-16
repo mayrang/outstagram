@@ -13,14 +13,16 @@ export default function NavButton({ fillIcon, outlineIcon, path }: Props) {
   const pathname = usePathname();
   const isCurrentPage = pathname === path;
   return (
-    <>
+    <div className="text-2xl group">
       {isCurrentPage ? (
         fillIcon
       ) : (
-        <Link href={`${path}`} className="block hover:hidden">
-          {outlineIcon}
+        <Link href={`${path}`}>
+          <div className="block group-hover:hidden">{outlineIcon}</div>
+
+          <div className="hidden group-hover:block">{fillIcon}</div>
         </Link>
       )}
-    </>
+    </div>
   );
 }
