@@ -12,8 +12,11 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={montserrat.className}>
-      <body>
-        <Header />
+      <body className="w-full max-w-screen-xl overflow-scroll mx-auto">
+        <header className="sticky top-0 bg-white z-10 border-b">
+          <Header />
+        </header>
+
         {children}
       </body>
     </html>
