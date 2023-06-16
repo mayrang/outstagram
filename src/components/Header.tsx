@@ -25,8 +25,7 @@ const menu = [
 ];
 
 export default function Header() {
-  const { data } = useSession();
-  console.log("data", data);
+  const { data: session } = useSession();
   return (
     <div className="w-full bg-white border-b mx-auto sticky p-4 flex items-center justify-between">
       <h1 className="font-bold text-3xl">Outstagram</h1>
@@ -35,7 +34,7 @@ export default function Header() {
           {menu.map(({ path, fillIcon, outlineIcon }, index) => (
             <NavButton key={index} path={path} fillIcon={fillIcon} outlineIcon={outlineIcon} />
           ))}
-          {data?.user ? (
+          {session ? (
             <ColorButton text="Sign Out" onClick={() => signOut()} />
           ) : (
             <ColorButton text="Sign In" onClick={() => signIn()} />
