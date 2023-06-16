@@ -4,6 +4,7 @@ import NavButton from "./NavButton";
 import { RiSearchFill, RiSearchLine } from "react-icons/ri";
 import { BsPlusSquare, BsPlusSquareFill } from "react-icons/bs";
 import ColorButton from "./ui/ColorButton";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const menu = [
   {
@@ -24,6 +25,8 @@ const menu = [
 ];
 
 export default function Header() {
+  const { data } = useSession();
+  console.log("data", data);
   return (
     <div className="w-full bg-white border-b mx-auto sticky p-4 flex items-center justify-between">
       <h1 className="font-bold text-3xl">Outstagram</h1>
@@ -32,7 +35,11 @@ export default function Header() {
           {menu.map(({ path, fillIcon, outlineIcon }, index) => (
             <NavButton key={index} path={path} fillIcon={fillIcon} outlineIcon={outlineIcon} />
           ))}
-          <ColorButton text="Sign In" onClick={() => {}} />
+          {data?.user ? (
+            <ColorButton text="Sign Out" onClick={() => signOut()} />
+          ) : (
+            <ColorButton text="Sign In" onClick={() => signIn()} />
+          )}
         </ul>
       </nav>
     </div>
