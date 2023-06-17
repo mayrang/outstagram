@@ -5,8 +5,8 @@ import { RiSearchFill, RiSearchLine } from "react-icons/ri";
 import { BsPlusSquare, BsPlusSquareFill } from "react-icons/bs";
 import ColorButton from "./ui/ColorButton";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
 import AvatarBadge from "./ui/AvatarBadge";
+import Link from "next/link";
 
 const menu = [
   {
@@ -28,29 +28,32 @@ const menu = [
 
 export default function Header() {
   const { data: session } = useSession();
+  const user = session?.user;
 
-  const pathname = usePathname();
   return (
     <div className="w-full bg-white border-b mx-auto sticky p-4 flex items-center justify-between">
       <h1 className="font-bold text-3xl">Outstagram</h1>
       <nav>
         <ul className="flex items-center  gap-4">
-          {menu.map(({ path, fillIcon, outlineIcon }, index) => (
-            <NavButton key={index} path={path} fillIcon={fillIcon} outlineIcon={outlineIcon} />
+          {menu.map(({ path, fillIcon, outlineIcon }) => (
+            <li key={path}>
+              <NavButton path={path} fillIcon={fillIcon} outlineIcon={outlineIcon} />
+            </li>
           ))}
-
-          {session ? (
-            <>
-              <AvatarBadge image={session.user.image as string} username={session.user.username as string} />
-              <ColorButton text="Sign Out" size="text-base" onClick={() => signOut()} />
-            </>
-          ) : (
-            <ColorButton
-              text="Sign In"
-              size="text-base"
-              onClick={() => signIn(undefined, { callbackUrl: `http://localhost:3000${pathname}` })}
-            />
+          {user && (
+            <li>
+              <Link href={`/user/${user.username}`}>
+                <AvatarBadge image={user.image} username={user.username} />
+              </Link>
+            </li>
           )}
+          <li>
+            {session ? (
+              <ColorButton text="Sign Out" onClick={() => signOut()} />
+            ) : (
+              <ColorButton text="Sign In" onClick={() => signIn()} />
+            )}
+          </li>
         </ul>
       </nav>
     </div>

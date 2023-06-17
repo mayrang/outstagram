@@ -1,9 +1,9 @@
-import NextAuth, { Session } from "next-auth";
+import NextAuth, { NextAuthOptions, Session } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -14,8 +14,12 @@ export const authOptions = {
     signIn: "/auth/signin",
   },
   callbacks: {
-    async session({ session, token, user }: { session: Session; token: JWT; user: AdapterUser }) {
-      session.user.username = session?.user?.email?.split("@")[0] || session.user.name;
+    async session({ session }) {
+      const user = session?.user;
+      if (user) {
+        session.user.username = session.user?.email?.split("@")[0] || "";
+      }
+
       return session;
     },
   },
