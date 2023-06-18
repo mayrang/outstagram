@@ -1,29 +1,26 @@
-"use client";
-import React, { useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { redirect, useRouter } from "next/navigation";
-import SideBar from "@/components/SideBar";
-import FollowingBar from "@/components/followingBar";
-import PostList from "@/components/PostList";
+import React from "react";
 
-export default function Home() {
-  const { data: session } = useSession();
+import { redirect } from "next/navigation";
+import SideBar from "@/components/SideBar";
+import FollowingBar from "@/components/FollowingBar";
+import PostList from "@/components/PostList";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+
+export default async function Home() {
+  const session = await getServerSession(authOptions);
   const user = session?.user;
-  const router = useRouter();
-  console.log(user);
-  useEffect(() => {
-    if (!user) {
-      router.push("/auth/signin");
-    }
-  }, [user]);
+  if (!user) {
+    redirect("/auth/signin");
+  }
+
   return (
-    <section className="flex w-full mt-6">
-      <div className="w-1/2">
+    <section className="flex flex-col md:flex-row w-full max-w-[850px] p-4 ">
+      <div className="basis-3/4">
         <FollowingBar />
         <PostList />
       </div>
-      <div className="w-1/2">
+      <div className="basis-1/4">
         <SideBar />
       </div>
     </section>

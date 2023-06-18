@@ -3,18 +3,12 @@ import AvatarProfile from "./AvatarProfile";
 
 export default function SideBar() {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-4 md:gap-6">
       <AvatarProfile />
-      <p className=" text-gray-600">
-        About · Help · API · Jobs ·<br />
-        Privacy · Terms · Location ·<br />
-        Language
-      </p>
-      <p className="font-semibold text-gray-600">
-        @Copyright OUTSTAGRAM
-        <br />
-        from METAL
-      </p>
+      <div className="text-neutral-500">
+        <p className="text-sm ">About · Help · API · Jobs · Privacy · Terms · Location · Language</p>
+        <p className="text-sm font-semibold mt-3">@Copyright OUTSTAGRAM from METAL</p>
+      </div>
     </div>
   );
 }
