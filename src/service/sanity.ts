@@ -1,13 +1,5 @@
 import { createClient } from "@sanity/client";
 
-type User = {
-  id: string;
-  username: string;
-  name: string;
-  email: string;
-  image?: string | null;
-};
-
 export const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID,
   dataset: process.env.SANITY_DATASET,

@@ -1,5 +1,13 @@
 import { client } from "./sanity";
 
+type User = {
+  id: string;
+  username: string;
+  name: string;
+  email: string;
+  image?: string | null;
+};
+
 export async function createUser({ id, username, name, email, image }: User) {
   try {
     const result = await client.createOrReplace({
