@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import AuthContext from "@/context/AuthContext";
+import SWRContext from "@/context/SWRContext";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -15,10 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={montserrat.className}>
       <body className="w-full max-w-screen-xl overflow-scroll mx-auto">
         <AuthContext>
-          <header className="sticky top-0 bg-white z-10 border-b">
-            <Header />
-          </header>
-          <main> {children}</main>
+          <SWRContext>
+            <header className="sticky top-0 bg-white z-10 border-b">
+              <Header />
+            </header>
+            <main> {children}</main>
+          </SWRContext>
         </AuthContext>
       </body>
     </html>
