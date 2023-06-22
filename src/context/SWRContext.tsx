@@ -4,9 +4,7 @@ import { SWRConfig } from "swr";
 
 export default function SWRContext({ children }: { children: React.ReactNode }) {
   return (
-    <SWRConfig
-      value={{ refreshInterval: 60000, fetcher: (resource, init) => fetch(resource).then((res) => res.json()) }}
-    >
+    <SWRConfig value={{ fetcher: (resource: string) => fetch(resource).then((res) => res.json()) }}>
       {children}
     </SWRConfig>
   );

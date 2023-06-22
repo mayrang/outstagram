@@ -16,12 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={montserrat.className}>
       <body className="w-full max-w-screen-xl overflow-scroll mx-auto">
         <AuthContext>
-          <SWRContext>
-            <header className="sticky top-0 bg-white z-10 border-b">
-              <Header />
-            </header>
-            <main> {children}</main>
-          </SWRContext>
+          <header className="sticky top-0 bg-white z-10 border-b">
+            <Header />
+          </header>
+          <main className="w-full min-h-full flex justify-center bg-neutral-50">
+            <SWRContext>{children}</SWRContext>
+          </main>
         </AuthContext>
       </body>
     </html>

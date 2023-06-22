@@ -28,3 +28,11 @@ export async function createUser({ id, username, name, email, image }: User) {
     return "에러가 발생했습니다.";
   }
 }
+
+export async function getUser(username: string) {
+  const user = await client.fetch(
+    `*[_type=="user" && username == "${username}"][0]{..., "id": _id, "bookmarks":bookmarks[]->_id, followers[]->{username, image}, followings[]->{ username, image}}`
+  );
+
+  return user;
+}

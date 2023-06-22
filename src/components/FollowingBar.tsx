@@ -1,52 +1,32 @@
 "use client";
-import { User } from "@/model/user";
+import { DetailUser } from "@/model/user";
 import React from "react";
 import useSWR from "swr";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import AvatarBadge from "./ui/AvatarBadge";
 import { PropagateLoader } from "react-spinners";
+import ScrollableBar from "./ui/ScrollableBar";
+import Link from "next/link";
 
-type Props = {
-  user: User;
-};
+export default function FollowingBar() {
+  const { data, isLoading } = useSWR<DetailUser>(`/api/me`);
+  const followings = data?.followings && [...data.followings, ...data.followings, ...data.followings];
 
-export default function FollowingBar({ user }: Props) {
-  console.log(user);
-  const { data: followings, isLoading } = useSWR(`/api/following/${user.username}`);
-  console.log(followings);
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 6,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 6,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 5,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 4,
-    },
-  };
   return (
-    <section className="flex items-center justify-center w-full  border shadow-md py-4">
+    <section className="flex items-center justify-center w-full min-h-[90px]  border shadow-md shadow-neutral-300 rounded-lg mb-4 p-4">
       {isLoading ? (
-        <PropagateLoader className="mx-auto py-12" color="#FF0000" />
+        <PropagateLoader color="#FF0000" />
       ) : (
-        <Carousel infinite containerClass="w-full flex  gap-2 " arrows responsive={responsive}>
-          {followings.map(({ image, name, username }: User) => (
-            <div className=" flex flex-col items-center" key={username}>
+        (!followings || followings.length === 0) && <p>팔로잉한 유저가 없습니다.</p>
+      )}
+      {followings && followings.length > 0 && (
+        <ScrollableBar>
+          {followings.map(({ image, username }) => (
+            <Link href={`/user/${username}`} className=" flex flex-col items-center w-20" key={username}>
               <AvatarBadge highlight image={image} username={username} size="normal" />
-              <span className="text-base">{name}</span>
-            </div>
+              <span className="text-sm w-full text-ellipsis overflow-hidden text-center">{username}</span>
+            </Link>
           ))}
-        </Carousel>
+        </ScrollableBar>
       )}
     </section>
   );
