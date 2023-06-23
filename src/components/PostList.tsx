@@ -1,11 +1,11 @@
 "use client";
-
 import React from "react";
 import useSWR from "swr";
 import PostCard from "./PostCard";
-import { GridLoader } from "react-spinners";
+
 import { SimplePost } from "@/model/post";
 import GridSpinner from "./ui/icons/GridSpinner";
+
 export default function PostList() {
   const { data, isLoading, error } = useSWR<SimplePost[]>("/api/posts");
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 const responsive = {
@@ -15,7 +16,14 @@ const responsive = {
 
 export default function ScrollableBar({ children }: { children: React.ReactNode }) {
   return (
-    <Carousel infinite containerClass="w-full flex  gap-2 " arrows responsive={responsive}>
+    <Carousel
+      customRightArrow={<AiOutlineRight className="z-10 w-8 cursor-pointer h-8 right-[calc(4%+1px)] absolute" />}
+      customLeftArrow={<AiOutlineLeft className="z-10 w-8 cursor-pointer h-8 left-[calc(4%+1px)] absolute" />}
+      infinite
+      containerClass="w-full flex  gap-2 z-1"
+      arrows
+      responsive={responsive}
+    >
       {children}
     </Carousel>
   );
