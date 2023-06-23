@@ -1,11 +1,12 @@
 import React from "react";
-import { BsEmojiSmile } from "react-icons/bs";
+import SmileIcon from "./icons/SmileIcon";
+
 export default function CommentInput() {
   return (
-    <form className="border px-3 bg-white py-4 flex items-center justify-between gap-5">
-      <BsEmojiSmile className="w-5 h-5 " />
-      <input className="outline-none border-none grow text-lg" />
-      <button className="text-blue-500 text-lg font-semibold">post</button>
+    <form className="border-t px-3 border-neutral-300  bg-white flex items-center  ">
+      <SmileIcon />
+      <input className="outline-none border-none w-full ml-2 p-3 text-lg" />
+      <button className="text-sky-500  ml-2 font-bold">post</button>
     </form>
   );
 }

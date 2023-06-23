@@ -1,49 +1,34 @@
 import React from "react";
 import AvatarBadge from "./ui/AvatarBadge";
-import { Post } from "@/model/post";
-import { urlFor } from "@/service/image";
-import { AiOutlineHeart } from "react-icons/ai";
-import { FaRegBookmark } from "react-icons/fa";
-import TimeAgo from "./ui/TimeAgo";
+import { SimplePost } from "@/model/post";
+
 import CommentInput from "./ui/CommentInput";
+import Image from "next/image";
+import ActionBar from "./ui/ActionBar";
+
 type Props = {
-  post: Post;
+  post: SimplePost;
+  priority?: boolean;
 };
 
-export default function PostCard({
-  post: {
-    _updatedAt,
-    author,
-    likes,
-    photo,
-    _createdAt,
-    comment: { content },
-  },
-}: Props) {
-  const likeCount = likes || 0;
+export default function PostCard({ post, priority = false }: Props) {
+  const { username, userImage, text, createdAt, likes, image } = post;
   return (
-    <article className="w-full rounded-lg bg-white shadow-neutral-50 border overflow-hidden">
+    <article className=" rounded-lg bg-white shadow-neutral-50 border border-gray-200 overflow-hidden">
       <div className="p-2 flex items-center gap-2">
-        <AvatarBadge highlight size="small" image={author.image} username={author.username} />
-        <span className="font-bold">{author.username}</span>
+        <AvatarBadge highlight size="medium" image={userImage} username={username} />
+        <span className="font-bold text-gray-900 ">{username}</span>
       </div>
-      <img className="w-full" src={urlFor(photo).width(400).height(400).url()} alt="image" />
-      <div className="p-4 flex flex-col gap-2">
-        <div className=" flex items-center justify-between">
-          <button>
-            <AiOutlineHeart className="w-7 h-7" />
-          </button>
-          <button>
-            <FaRegBookmark className="w-6 h-6" />
-          </button>
-        </div>
-        <span className="font-semibold text-sm">{`${likeCount} ${likeCount > 1 ? "likes" : "like"}`} </span>
-        <div className="flex items-center gap-2">
-          <span className="font-bold">{author.username}</span>
-          <p>{content}</p>
-        </div>
-        <TimeAgo date={_updatedAt || _createdAt} />
-      </div>
+      <Image
+        className="w-full object-cover aspect-square"
+        src={image}
+        alt={`photo by ${username}`}
+        width={500}
+        height={500}
+        priority={priority}
+      />
+      <ActionBar likes={likes} text={text} username={username} createdAt={createdAt} />
+
       <CommentInput />
     </article>
   );

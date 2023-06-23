@@ -22,7 +22,7 @@ export default function FollowingBar() {
         <ScrollableBar>
           {followings.map(({ image, username }) => (
             <Link href={`/user/${username}`} className=" flex flex-col items-center w-20" key={username}>
-              <AvatarBadge highlight image={image} username={username} size="normal" />
+              <AvatarBadge highlight image={image} username={username} size="large" />
               <span className="text-sm w-full text-ellipsis overflow-hidden text-center">{username}</span>
             </Link>
           ))}

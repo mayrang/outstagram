@@ -1,14 +1,30 @@
 "use client";
-import { Post } from "@/model/post";
+
 import React from "react";
 import useSWR from "swr";
 import PostCard from "./PostCard";
+import { GridLoader } from "react-spinners";
+import { SimplePost } from "@/model/post";
+import GridSpinner from "./ui/icons/GridSpinner";
 export default function PostList() {
-  const { data, isLoading, error } = useSWR<Post[]>("/api/posts");
-  console.log("posts", data);
+  const { data, isLoading, error } = useSWR<SimplePost[]>("/api/posts");
+
   return (
-    <section className="w-full flex flex-col items-center gap-4">
-      {data && data.length > 0 && data.map((post) => <PostCard key={post._id} post={post} />)}
+    <section>
+      {isLoading && (
+        <div className="text-center mt-32">
+          <GridSpinner />
+        </div>
+      )}
+      {data && data.length > 0 && (
+        <ul>
+          {data.map((post, index) => (
+            <li className="mb-2" key={post.id}>
+              <PostCard post={post} priority={index < 2} />
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
