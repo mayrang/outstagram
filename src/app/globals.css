@@ -11,3 +11,7 @@
 body {
   height: 100vh;
 }
+
+.react-multiple-carousel__arrow {
+  z-index: 5 !important;
+}
