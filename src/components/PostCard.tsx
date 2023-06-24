@@ -8,6 +8,7 @@ import Image from "next/image";
 import ActionBar from "./ui/ActionBar";
 import ModalPortal from "./ui/ModalPortal";
 import PostModal from "./ui/PostModal";
+import PostAvatar from "./ui/PostAvatar";
 
 type Props = {
   post: SimplePost;
@@ -31,10 +32,7 @@ export default function PostCard({ post, priority = false }: Props) {
         onClick={() => setModal(true)}
         className=" rounded-lg bg-white shadow-neutral-50 border border-gray-200 overflow-hidden"
       >
-        <div className="p-2 flex items-center gap-2">
-          <AvatarBadge highlight size="medium" image={userImage} username={username} />
-          <span className="font-bold text-gray-900 ">{username}</span>
-        </div>
+        <PostAvatar username={username} image={userImage} />
         <Image
           className="w-full object-cover aspect-square"
           src={image}

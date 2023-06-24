@@ -10,7 +10,7 @@ type User = {
 
 export async function createUser({ id, username, name, email, image }: User) {
   try {
-    const result = await client.createOrReplace({
+    const result = await client.createIfNotExists({
       _id: id,
       _type: "user",
       username,

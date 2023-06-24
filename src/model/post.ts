@@ -15,6 +15,6 @@ export type FullPost = {
 
 export type Comment = {
   username: string;
-  text: string;
+  comment: string;
   image: string;
 };

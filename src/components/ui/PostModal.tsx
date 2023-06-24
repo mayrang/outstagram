@@ -18,7 +18,7 @@ export default function PostModal({ children, onClose }: Props) {
         }
       }}
     >
-      <button className="fixed top-32 right-14 text-white">
+      <button className="fixed top-0 right-0 p-12 text-white">
         <CloseIcon />
       </button>
       <div className="bg-white w-4/5 h-3/5 max-w-7xl">{children}</div>

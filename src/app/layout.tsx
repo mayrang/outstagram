@@ -14,12 +14,14 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={montserrat.className}>
-      <body className="w-full max-w-screen-xl overflow-y-scroll mx-auto">
+      <body className="w-full overflow-y-scroll bg-neutral-50">
         <AuthContext>
           <header className="sticky top-0 bg-white z-10 border-b">
-            <Header />
+            <div className="max-w-screen-xl mx-auto">
+              <Header />
+            </div>
           </header>
-          <main className="w-full min-h-full flex justify-center bg-neutral-50">
+          <main className="w-full min-h-full flex justify-center ">
             <SWRContext>{children}</SWRContext>
           </main>
         </AuthContext>

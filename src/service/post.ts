@@ -1,4 +1,4 @@
-import { Comment, SimplePost } from "@/model/post";
+import { Comment, FullPost, SimplePost } from "@/model/post";
 import { client, urlFor } from "./sanity";
 
 const simplePostProjection = `
@@ -24,9 +24,19 @@ export async function getPosts(username: string) {
   return posts.map((post: SimplePost) => ({ ...post, image: urlFor(post.image) }));
 }
 
-export async function getComments(postId: string) {
+export async function getPost(postId: string) {
   console.log(postId);
-  return await client.fetch(
-    `*[_type=="post" && _id == "${postId}" ].comments[]{"username": author->username, "image":author->image, "text":content } `
-  );
+  return client
+    .fetch(
+      `*[_type=="post" && _id == "${postId}" ][0]{
+      "username": author->username,
+      "userImage": author->image,
+      "image": photo,
+      "text": comments[0].content,
+      comments[]{"username": author->username, "image":author->image, "comment":content },
+      "id": _id,
+      "createdAt": _createdAt
+    } `
+    )
+    .then((post: FullPost) => ({ ...post, image: urlFor(post.image) }));
 }
