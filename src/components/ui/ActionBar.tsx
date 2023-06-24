@@ -7,7 +7,7 @@ type Props = {
   likes: string[];
   username: string;
   createdAt: Date;
-  text: string;
+  text?: string;
 };
 
 export default function ActionBar({ likes, username, createdAt, text }: Props) {
@@ -23,10 +23,12 @@ export default function ActionBar({ likes, username, createdAt, text }: Props) {
       </div>
       <div className="px-4 py-1">
         <p className="font-bold text-sm mb-2">{`${likes?.length ?? 0} ${likes?.length > 1 ? "likes" : "like"}`} </p>
-        <p>
-          <span className="font-bold">{username}</span>
-          {text}
-        </p>
+        {text && (
+          <p>
+            <span className="font-bold">{username}</span>
+            {text}
+          </p>
+        )}
         <p className="text-xs text-neutral-500 uppercase my-2">{parseDate(createdAt)}</p>
       </div>
     </>

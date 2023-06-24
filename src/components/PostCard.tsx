@@ -17,12 +17,13 @@ type Props = {
 export default function PostCard({ post, priority = false }: Props) {
   const { username, userImage, text, createdAt, likes, image } = post;
   const [modal, setModal] = useState(false);
+  console.log(text);
   return (
     <>
       {modal && (
         <ModalPortal>
           <PostModal onClose={() => setModal(false)}>
-            <DetailPost />
+            <DetailPost post={post} />
           </PostModal>
         </ModalPortal>
       )}
