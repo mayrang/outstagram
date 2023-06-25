@@ -36,3 +36,18 @@ export async function getUser(username: string) {
 
   return user;
 }
+
+export async function getSearchUser(username: string) {
+  console.log(123);
+  console.log(
+    `*[_type=="user" ${
+      username.trim() === "" ? "" : `&& username == "${username}" || name == "${username}"`
+    }]{..., "id": _id, "bookmarks":bookmarks[]->_id, followers[]->{username, image}, followings[]->{ username, image}}`
+  );
+  const searchUser = await client.fetch(
+    `*[_type=="user" ${
+      username.trim() === "all" ? "" : `&& username == "${username}" || name == "${username}"`
+    }]{..., "id": _id, "bookmarks":bookmarks[]->_id, followers[]->{username, image}, followings[]->{username, image}}`
+  );
+  return searchUser;
+}
