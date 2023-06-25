@@ -1,15 +1,15 @@
 "use client";
 
-import { ProfileUser } from "@/model/user";
+import { SearchUser } from "@/model/user";
 import React, { useState } from "react";
 import useSWR from "swr";
-import UserProfile from "./UserProfile";
+import UserCard from "./UserCard";
 import GridSpinner from "./ui/icons/GridSpinner";
 import useDebounce from "@/hooks/useDebounce";
 export default function SearchUser() {
   const [keyword, setKeyword] = useState("");
   const deboundedKeyword = useDebounce(keyword, 1000);
-  const { data: users, isLoading, error } = useSWR<ProfileUser[]>(`/api/search/${deboundedKeyword}`);
+  const { data: users, isLoading, error } = useSWR<SearchUser[]>(`/api/search/${deboundedKeyword}`);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ export default function SearchUser() {
         <ul className="w-full p-6 flex flex-col items-center gap-2">
           {users.map((user) => (
             <li className="w-full" key={user.username}>
-              <UserProfile user={user} />
+              <UserCard user={user} />
             </li>
           ))}
         </ul>

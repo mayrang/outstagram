@@ -1,6 +1,6 @@
 import React from "react";
 
-type AvatarSize = "large" | "small" | "medium";
+type AvatarSize = "large" | "small" | "medium" | "superLarge";
 
 type Props = {
   image?: string | null;
@@ -16,7 +16,7 @@ export default function AvatarBadge({ image, username, size = "large", highlight
         src={image || undefined}
         alt={username || "user profile"}
         referrerPolicy="no-referrer"
-        className={`rounded-full object-cover bg-white ${getImageStyle(size)}`}
+        className={`rounded-full object-cover bg-white  ${getImageStyle(size)}`}
       />
     </div>
   );
@@ -37,6 +37,8 @@ function getContainerSize(size: AvatarSize): string {
       return "w-11 h-11";
     case "large":
       return "w-[68px] h-[68px]";
+    case "superLarge":
+      return "w-[152px] h-[152px]";
   }
 }
 
@@ -48,5 +50,7 @@ function getImageStyle(size: AvatarSize): string {
       return "w-[42px] h-[42px] p-[0.1rem]";
     case "large":
       return "w-16 h-16 p-[0.2rem]";
+    case "superLarge":
+      return "w-[150px] h-[150px] p-[0.2rem]";
   }
 }

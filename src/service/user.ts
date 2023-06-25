@@ -1,4 +1,4 @@
-import { ProfileUser } from "@/model/user";
+import { ProfileUser, SearchUser } from "@/model/user";
 import { client } from "./sanity";
 
 type User = {
@@ -42,7 +42,26 @@ export async function getSearchUsers(keyword?: string) {
   const query = keyword ? `&& username == "${keyword}" || name == "${keyword}"` : "";
   return client
     .fetch(`*[_type=="user" ${query}]{...,  "followings": count(followings), "followers": count(followers)}`)
-    .then((users: ProfileUser[]) =>
+    .then((users: SearchUser[]) =>
       users.map((user) => ({ ...user, followers: user.followers ?? 0, followings: user.followings ?? 0 }))
     );
+}
+
+export async function getUserForProfile(username: string) {
+  return client
+    .fetch(
+      `*[_type == "user" && username == "${username}"][0]{
+      ...,
+      "id": _id,
+      "followings": count(followings),
+      "followers": count(followers),
+      "posts": count(*[_type=="post" && author->username== "${username}"])
+    }`
+    )
+    .then((user: ProfileUser) => ({
+      ...user,
+      followings: user.followings ?? 0,
+      followers: user.followers ?? 0,
+      posts: user.posts ?? 0,
+    }));
 }
