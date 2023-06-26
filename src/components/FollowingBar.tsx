@@ -1,5 +1,5 @@
 "use client";
-import { DetailUser } from "@/model/user";
+import { HomeUser } from "@/model/user";
 import React from "react";
 import useSWR from "swr";
 import AvatarBadge from "./ui/AvatarBadge";
@@ -8,7 +8,7 @@ import ScrollableBar from "./ui/ScrollableBar";
 import Link from "next/link";
 
 export default function FollowingBar() {
-  const { data, isLoading } = useSWR<DetailUser>(`/api/me`);
+  const { data, isLoading } = useSWR<HomeUser>(`/api/me`);
   const followings = data?.followings && [...data.followings, ...data.followings, ...data.followings];
 
   return (

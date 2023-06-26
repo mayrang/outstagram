@@ -49,12 +49,16 @@ export async function getUserPosts(username: string) {
 }
 
 export async function getLikedPosts(username: string) {
-  return client.fetch(`*[_type == "post" && likes->username == "${username}"]{${simplePostProjection}}`).then(mapPosts);
+  return client
+    .fetch(`*[_type == "post" && "${username}" in likes[]->username ]{${simplePostProjection}}`)
+    .then(mapPosts);
 }
 
 export async function getBookmarkedPost(username: string) {
   return client
-    .fetch(`*[_type == "user" &&  username == "${username}"].bookmarks[]->{${simplePostProjection}}`)
+    .fetch(
+      `*[_type == "post" &&  _id in *[_type == "user" && author->username == "${username}"].bookmarks[]._ref]{${simplePostProjection}}`
+    )
     .then(mapPosts);
 }
 

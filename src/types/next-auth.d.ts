@@ -1,4 +1,4 @@
-import { User } from "@/model/user";
+import { AuthUser } from "@/model/user";
 import NextAuth, { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
@@ -6,6 +6,6 @@ declare module "next-auth" {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
-    user: User;
+    user: AuthUser;
   }
 }

@@ -1,36 +1,40 @@
 "use client";
-import { DetailUser, ProfileUser } from "@/model/user";
+import { HomeUser, ProfileUser } from "@/model/user";
 import React from "react";
-import useSWR from "swr";
+
 import AvatarBadge from "./ui/AvatarBadge";
+import FollowButton from "./ui/FollowButton";
 
 type Props = {
   user: ProfileUser;
 };
 
 export default function UserProfile({ user }: Props) {
-  const { data: me, isLoading, error } = useSWR<DetailUser>(`/api/me`);
-  const checkFollowing = me?.followings.find((following) => following.username === user.username);
+  const { username, image, posts, followers, followings, name } = user;
+  const info = [
+    { title: "posts", data: posts },
+    { title: "followers", data: followers },
+    { title: "followings", data: followings },
+  ];
   return (
-    <div className="flex w-full items-center py-16 gap-10 justify-center">
-      <AvatarBadge highlight username={user.username} size="superLarge" image={user.image} />
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-6">
-          <p className="text-2xl">{user.username}</p>
-          {checkFollowing ? (
-            <button className="bg-red-400 text-white rounded border-none text-lg px-4 py-1">Unfollow</button>
-          ) : (
-            me && <button className="bg-blue-400 text-white rounded border-none text-lg px-4 py-1">Follow</button>
-          )}
+    <section className="flex w-full items-center flex-col md:flex-row py-12 border-b border-neutral-300  justify-center">
+      <AvatarBadge highlight username={username} size="superLarge" image={image} />
+      <div className="md:ml-10 basis-1/3">
+        <div className="flex flex-col md:items-center items-center">
+          <p className="text-2xl md:mr-8 my-4 md:mb-0">{username}</p>
+          <FollowButton user={user} />
         </div>
 
-        <div className="flex items-center gap-3">
-          <span>{user.posts} posts</span>
-          <span>{user.followers} followers</span>
-          <span>{user.followings} followings</span>
-        </div>
-        <p className="text-xl font-bold">{user.name}</p>
+        <ul className="my-4 flex gap-4">
+          {info.map(({ title, data }, index) => (
+            <li key={index}>
+              <span className="font-bold mr-1">{data}</span>
+              {title}
+            </li>
+          ))}
+        </ul>
+        <p className="text-xl font-bold text-center md:text-start">{name}</p>
       </div>
-    </div>
+    </section>
   );
 }

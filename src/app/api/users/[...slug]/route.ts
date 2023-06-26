@@ -7,20 +7,23 @@ type Context = {
   };
 };
 export async function GET(_: NextRequest, { params: { slug } }: Context) {
+  if (!slug || slug.length < 2) {
+    return new Response("잘못된 요청입니다.", { status: 400 });
+  }
   const [username, keyword] = slug;
 
-  let router;
+  let router = getUserPosts;
 
   switch (keyword) {
     case "posts":
-      router = await getUserPosts(username);
+      router = getUserPosts;
       break;
     case "liked":
-      router = await getLikedPosts(username);
+      router = getLikedPosts;
       break;
     case "saved":
-      router = await getBookmarkedPost(username);
+      router = getBookmarkedPost;
       break;
   }
-  return NextResponse.json(router);
+  return router(username).then((posts) => NextResponse.json(posts));
 }

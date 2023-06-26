@@ -8,9 +8,10 @@ import DetailPost from "./DetailPost";
 
 type Props = {
   post: SimplePost;
+  priority?: boolean;
 };
 
-export default function PostGridCard({ post }: Props) {
+export default function PostGridCard({ post, priority = false }: Props) {
   const [modal, setModal] = useState(false);
   const { data: session } = useSession();
   const user = session?.user;
@@ -18,7 +19,7 @@ export default function PostGridCard({ post }: Props) {
     if (user) {
       setModal(true);
     } else {
-      signIn();
+      return signIn();
     }
   };
   return (
@@ -30,8 +31,16 @@ export default function PostGridCard({ post }: Props) {
           </PostModal>
         </ModalPortal>
       )}
-      <button onClick={handlePost} key={post.id} className="relative w-full h-[400px]">
-        <Image fill src={post.image} alt={`photo by ${post.username}`} />
+      <button onClick={handlePost} key={post.id} className="relative w-full aspect-square ">
+        <Image
+          priority={priority}
+          onClick={handlePost}
+          fill
+          src={post.image}
+          sizes="650px"
+          alt={`photo by ${post.username}`}
+          className="object-cover"
+        />
       </button>
     </>
   );
