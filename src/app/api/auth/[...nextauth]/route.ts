@@ -13,10 +13,11 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/signin",
   },
   callbacks: {
-    async session({ session }) {
-      const user = session?.user;
-      if (user) {
+    async session({ session, token }) {
+      const checkUser = session?.user;
+      if (checkUser) {
         session.user.username = session.user?.email?.split("@")[0] || "";
+        session.user.id = token.id as string;
       }
 
       return session;
@@ -34,6 +35,12 @@ export const authOptions: NextAuthOptions = {
       };
       await createUser(schemaUser);
       return true;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
     },
   },
 };

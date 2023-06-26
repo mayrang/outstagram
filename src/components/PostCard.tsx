@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function PostCard({ post, priority = false }: Props) {
-  const { username, userImage, text, createdAt, likes, image } = post;
+  const { username, userImage, text, createdAt, likes, image, id } = post;
   const [modal, setModal] = useState(false);
   console.log(text);
   return (
@@ -41,7 +41,7 @@ export default function PostCard({ post, priority = false }: Props) {
           height={500}
           priority={priority}
         />
-        <ActionBar likes={likes} text={text} username={username} createdAt={createdAt} />
+        <ActionBar likes={likes} text={text} username={username} postId={id} createdAt={createdAt} />
 
         <CommentInput />
       </article>

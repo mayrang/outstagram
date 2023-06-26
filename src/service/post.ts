@@ -33,13 +33,14 @@ export async function getPost(postId: string) {
       "username": author->username,
       "userImage": author->image,
       "image": photo,
+      likes[],
       "text": comments[0].content,
       comments[]{"username": author->username, "image":author->image, "comment":content },
       "id": _id,
       "createdAt": _createdAt
     } `
     )
-    .then(mapPosts);
+    .then((post: FullPost) => ({ ...post, image: urlFor(post.image) }));
 }
 
 export async function getUserPosts(username: string) {
@@ -64,4 +65,26 @@ export async function getBookmarkedPost(username: string) {
 
 function mapPosts(posts: SimplePost[]) {
   return posts.map((post: SimplePost) => ({ ...post, image: urlFor(post.image) }));
+}
+
+export async function addLikes(postId: string, userId: string) {
+  console.log(postId, userId);
+  return client
+    .patch(postId)
+    .setIfMissing({ likes: [] })
+    .append("likes", [{ _ref: userId, _type: "reference" }])
+    .commit({
+      // Adds a `_key` attribute to array items, unique within the array, to
+      // ensure it can be addressed uniquely in a real-time collaboration context
+      autoGenerateArrayKeys: true,
+    });
+}
+
+export async function removeLikes(postId: string, userId: string) {
+  return client
+    .patch(postId)
+    .unset(["likes[0]", `likes[_ref=="${userId}"]`])
+    .commit()
+    .then((response) => response)
+    .catch((error) => error);
 }

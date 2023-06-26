@@ -1,20 +1,34 @@
+"use client";
 import React from "react";
 
 import { parseDate } from "@/utils/timeFormat";
 import HeartIcon from "./icons/HeartIcon";
 import BookmarkIcon from "./icons/BookmarkIcon";
+import { useSession } from "next-auth/react";
 type Props = {
   likes: string[];
   username: string;
   createdAt: Date;
   text?: string;
+
+  postId: string;
 };
 
-export default function ActionBar({ likes, username, createdAt, text }: Props) {
+export default function ActionBar({ likes, username, createdAt, text, postId }: Props) {
+  const { data: session } = useSession();
+  const user = session?.user;
+  const handleLikes = async () => {
+    if (user && likes.find((like) => like === user.username)) {
+      await fetch(`/api/likes/${user.id}/${postId}/remove`);
+    } else {
+      console.log(user);
+      fetch(`/api/likes/${user?.id}/${postId}/add`).catch(console.log);
+    }
+  };
   return (
     <>
       <div className=" flex items-center justify-between my-2 px-4">
-        <button>
+        <button onClick={handleLikes}>
           <HeartIcon />
         </button>
         <button>
