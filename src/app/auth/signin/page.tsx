@@ -1,9 +1,15 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import SignIn from "@/components/SignIn";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
 import { getProviders } from "next-auth/react";
 import { redirect } from "next/navigation";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "sign in",
+  description: "sign in or sign up",
+};
 
 type Props = {
   searchParams: {

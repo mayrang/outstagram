@@ -3,11 +3,15 @@ import "./globals.css";
 import { Montserrat } from "next/font/google";
 import AuthContext from "@/context/AuthContext";
 import SWRContext from "@/context/SWRContext";
+import { Metadata } from "next";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "outstagram",
+export const metadata: Metadata = {
+  title: {
+    default: "outstagram",
+    template: "outstagram | %s",
+  },
   description: "아싸들을 위한 SNS",
 };
 
