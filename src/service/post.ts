@@ -84,7 +84,5 @@ export async function removeLikes(postId: string, userId: string) {
   return client
     .patch(postId)
     .unset(["likes[0]", `likes[_ref=="${userId}"]`])
-    .commit()
-    .then((response) => response)
-    .catch((error) => error);
+    .commit();
 }

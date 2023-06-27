@@ -28,14 +28,12 @@ export default function PostCard({ post, priority = false }: Props) {
           </PostModal>
         </ModalPortal>
       )}
-      <article
-        onClick={() => setModal(true)}
-        className=" rounded-lg bg-white shadow-neutral-50 border border-gray-200 overflow-hidden"
-      >
+      <article className=" rounded-lg bg-white shadow-neutral-50 border border-gray-200 overflow-hidden">
         <PostAvatar username={username} image={userImage} />
         <Image
           className="w-full object-cover aspect-square"
           src={image}
+          onClick={() => setModal(true)}
           alt={`photo by ${username}`}
           width={500}
           height={500}

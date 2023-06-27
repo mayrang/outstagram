@@ -1,5 +1,4 @@
 import { SimplePost } from "@/model/post";
-import React from "react";
 import useSWR from "swr";
 
 async function updateLikes(id: string, like: boolean) {
@@ -27,5 +26,6 @@ export default function usePosts() {
       populateCache: false,
     });
   };
+
   return { posts, isLoading, error, setLikes };
 }

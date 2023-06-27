@@ -65,3 +65,23 @@ export async function getUserForProfile(username: string) {
       posts: user.posts ?? 0,
     }));
 }
+
+export async function addBookmarks(userId: string, postId: string) {
+  return client
+    .patch(userId)
+    .setIfMissing({ bookmarks: [] })
+    .append("bookmarks", [{ _ref: postId, _type: "reference" }])
+    .commit({
+      // Adds a `_key` attribute to array items, unique within the array, to
+      // ensure it can be addressed uniquely in a real-time collaboration context
+      autoGenerateArrayKeys: true,
+    });
+}
+
+export async function removeBookmarks(userId: string, postId: string) {
+  console.log("check");
+  return client
+    .patch(userId)
+    .unset([`bookmarks[_ref=="${postId}"]`])
+    .commit();
+}
