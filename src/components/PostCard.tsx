@@ -41,7 +41,7 @@ export default function PostCard({ post, priority = false }: Props) {
           height={500}
           priority={priority}
         />
-        <ActionBar likes={likes} text={text} username={username} postId={id} createdAt={createdAt} />
+        <ActionBar post={post} />
 
         <CommentInput />
       </article>

@@ -5,32 +5,29 @@ import { parseDate } from "@/utils/timeFormat";
 import HeartIcon from "./icons/HeartIcon";
 import BookmarkIcon from "./icons/BookmarkIcon";
 import { useSession } from "next-auth/react";
+import ToggleButton from "./ToggleButton";
+import usePosts from "@/hooks/usePosts";
+import { SimplePost } from "@/model/post";
+import HeartFillIcon from "./icons/HeartFillIcon";
 type Props = {
-  likes: string[];
-  username: string;
-  createdAt: Date;
-  text?: string;
-
-  postId: string;
+  post: SimplePost;
 };
 
-export default function ActionBar({ likes, username, createdAt, text, postId }: Props) {
+export default function ActionBar({ post }: Props) {
+  const { likes, username, createdAt, text } = post;
   const { data: session } = useSession();
   const user = session?.user;
-  const handleLikes = async () => {
-    if (user && likes.find((like) => like === user.username)) {
-      await fetch(`/api/likes/${user.id}/${postId}/remove`);
-    } else {
-      console.log(user);
-      fetch(`/api/likes/${user?.id}/${postId}/add`).catch(console.log);
+  const like = user ? likes.includes(user.username) : false;
+  const { setLikes } = usePosts();
+  const handleLikes = (like: boolean) => {
+    if (user) {
+      setLikes(post, user.username, like);
     }
   };
   return (
     <>
       <div className=" flex items-center justify-between my-2 px-4">
-        <button onClick={handleLikes}>
-          <HeartIcon />
-        </button>
+        <ToggleButton onToggle={handleLikes} toggle={like} onIcon={<HeartFillIcon />} offIcon={<HeartIcon />} />
         <button>
           <BookmarkIcon />
         </button>

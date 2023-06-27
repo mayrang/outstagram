@@ -64,7 +64,7 @@ export async function getBookmarkedPost(username: string) {
 }
 
 function mapPosts(posts: SimplePost[]) {
-  return posts.map((post: SimplePost) => ({ ...post, image: urlFor(post.image) }));
+  return posts.map((post: SimplePost) => ({ ...post, image: urlFor(post.image), likes: post.likes ?? [] }));
 }
 
 export async function addLikes(postId: string, userId: string) {

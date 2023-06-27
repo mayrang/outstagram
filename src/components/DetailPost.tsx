@@ -43,7 +43,7 @@ export default function DetailPost({ post }: Props) {
               </li>
             ))}
         </ul>
-        <ActionBar likes={likes} createdAt={createdAt} postId={id} username={username} />
+        <ActionBar post={post} />
         <CommentInput />
       </div>
     </div>
