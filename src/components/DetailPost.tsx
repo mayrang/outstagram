@@ -44,7 +44,7 @@ export default function DetailPost({ post }: Props) {
             ))}
         </ul>
         <ActionBar post={post} />
-        <CommentInput />
+        <CommentInput post={post} />
       </div>
     </div>
   );

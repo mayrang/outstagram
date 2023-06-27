@@ -41,7 +41,7 @@ export default function PostCard({ post, priority = false }: Props) {
         />
         <ActionBar post={post} />
 
-        <CommentInput />
+        <CommentInput post={post} />
       </article>
     </>
   );

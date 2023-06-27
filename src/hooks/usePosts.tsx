@@ -1,4 +1,5 @@
 import { SimplePost } from "@/model/post";
+import { AuthUser } from "@/model/user";
 import useSWR from "swr";
 
 async function updateLikes(id: string, like: boolean) {
@@ -11,6 +12,15 @@ async function updateLikes(id: string, like: boolean) {
   }).then((res) => res.json());
 }
 
+async function updateComment(id: string, comment: string) {
+  return fetch("/api/comment", {
+    method: "POST",
+    body: JSON.stringify({
+      id,
+      comment,
+    }),
+  }).then((res) => res.json());
+}
 export default function usePosts() {
   const { data: posts, isLoading, error, mutate } = useSWR<SimplePost[]>("/api/posts");
   const setLikes = (post: SimplePost, username: string, like: boolean) => {
@@ -27,5 +37,19 @@ export default function usePosts() {
     });
   };
 
-  return { posts, isLoading, error, setLikes };
+  const addComment = (comment: string, post: SimplePost) => {
+    const newPost = {
+      ...post,
+      comment: post.comments + 1,
+    };
+    const newPosts = posts?.map((post) => (post.id === newPost.id ? newPost : post));
+    return mutate(updateComment(post.id, comment), {
+      optimisticData: newPosts,
+      revalidate: false,
+      rollbackOnError: true,
+      populateCache: false,
+    });
+  };
+
+  return { posts, isLoading, error, setLikes, addComment };
 }
