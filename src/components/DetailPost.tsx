@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FullPost, SimplePost } from "@/model/post";
+import { Comment, FullPost, SimplePost } from "@/model/post";
 import Image from "next/image";
 import ActionBar from "./ui/ActionBar";
 import CommentInput from "./ui/CommentInput";
@@ -8,15 +8,18 @@ import useSWR from "swr";
 import AvatarBadge from "./ui/AvatarBadge";
 import GridSpinner from "./ui/icons/GridSpinner";
 import PostAvatar from "./ui/PostAvatar";
+import usePost from "@/hooks/usePost";
 type Props = {
   post: SimplePost;
 };
 
 export default function DetailPost({ post }: Props) {
   const { username, userImage, image, likes, text, createdAt, id } = post;
-  const { data, isLoading, error } = useSWR<FullPost>(`/api/posts/${id}`);
-  const comments = data?.comments;
-  console.log(data);
+  const { fullPost, isLoading, error, addComment } = usePost(id);
+  const comments = fullPost?.comments;
+  const handleComment = (comment: Comment) => {
+    addComment(comment);
+  };
   return (
     <div className=" flex h-full w-full">
       <div className="relative basis-3/5">
@@ -43,8 +46,7 @@ export default function DetailPost({ post }: Props) {
               </li>
             ))}
         </ul>
-        <ActionBar post={post} />
-        <CommentInput post={post} />
+        <ActionBar post={post} onComment={handleComment} />
       </div>
     </div>
   );

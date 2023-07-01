@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import AvatarBadge from "./ui/AvatarBadge";
-import { SimplePost } from "@/model/post";
+import { Comment, SimplePost } from "@/model/post";
 import DetailPost from "./DetailPost";
 import CommentInput from "./ui/CommentInput";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import ActionBar from "./ui/ActionBar";
 import ModalPortal from "./ui/ModalPortal";
 import PostModal from "./ui/PostModal";
 import PostAvatar from "./ui/PostAvatar";
+import usePosts from "@/hooks/usePosts";
 
 type Props = {
   post: SimplePost;
@@ -18,7 +19,10 @@ type Props = {
 export default function PostCard({ post, priority = false }: Props) {
   const { username, userImage, text, createdAt, likes, image, id } = post;
   const [modal, setModal] = useState(false);
-  console.log(text);
+  const { addComment } = usePosts();
+  const handleComment = (comment: Comment) => {
+    addComment(comment, post);
+  };
   return (
     <>
       {modal && (
@@ -39,9 +43,7 @@ export default function PostCard({ post, priority = false }: Props) {
           height={500}
           priority={priority}
         />
-        <ActionBar post={post} />
-
-        <CommentInput post={post} />
+        <ActionBar post={post} onComment={handleComment} />
       </article>
     </>
   );

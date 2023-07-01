@@ -5,14 +5,13 @@ import { SimplePost } from "@/model/post";
 import { useSession } from "next-auth/react";
 
 type Props = {
-  post: SimplePost;
+  onComment: (comment: string) => void;
 };
 
-export default function CommentInput({ post }: Props) {
+export default function CommentInput({ onComment }: Props) {
   const { data: session } = useSession();
   const user = session?.user;
   const [comment, setComment] = useState("");
-  const { addComment } = usePosts();
 
   const handleComment = (e: FormEvent) => {
     e.preventDefault();
@@ -21,7 +20,8 @@ export default function CommentInput({ post }: Props) {
     } else if (!user) {
       return;
     }
-    addComment(comment, post).then(() => setComment(""));
+    onComment(comment);
+    setComment("");
   };
   return (
     <form onSubmit={handleComment} className="border-t px-3 border-neutral-300  bg-white flex items-center  ">

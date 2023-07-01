@@ -5,9 +5,10 @@ import PostCard from "./PostCard";
 
 import { SimplePost } from "@/model/post";
 import GridSpinner from "./ui/icons/GridSpinner";
+import usePosts from "@/hooks/usePosts";
 
 export default function PostList() {
-  const { data, isLoading, error } = useSWR<SimplePost[]>("/api/posts");
+  const { posts, isLoading, error } = usePosts();
 
   return (
     <section>
@@ -16,9 +17,9 @@ export default function PostList() {
           <GridSpinner />
         </div>
       )}
-      {data && data.length > 0 && (
+      {posts && posts.length > 0 && (
         <ul>
-          {data.map((post, index) => (
+          {posts.map((post, index) => (
             <li className="mb-2" key={post.id}>
               <PostCard post={post} priority={index < 2} />
             </li>

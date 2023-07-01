@@ -1,4 +1,4 @@
-import { SimplePost } from "@/model/post";
+import { Comment, SimplePost } from "@/model/post";
 import { AuthUser } from "@/model/user";
 import useSWR from "swr";
 
@@ -37,13 +37,13 @@ export default function usePosts() {
     });
   };
 
-  const addComment = (comment: string, post: SimplePost) => {
+  const addComment = (comment: Comment, post: SimplePost) => {
     const newPost = {
       ...post,
       comment: post.comments + 1,
     };
     const newPosts = posts?.map((post) => (post.id === newPost.id ? newPost : post));
-    return mutate(updateComment(post.id, comment), {
+    return mutate(updateComment(post.id, comment.comment), {
       optimisticData: newPosts,
       revalidate: false,
       rollbackOnError: true,
