@@ -14,6 +14,16 @@ async function updateBookmarks(id: string, bookmark: boolean) {
   });
 }
 
+async function updateFollowings(followUserId: string, follow: boolean) {
+  return fetch("/api/followings", {
+    method: "PUT",
+    body: JSON.stringify({
+      followUserId,
+      follow,
+    }),
+  }).then((res) => res.json());
+}
+
 export default function useMe() {
   const { data: user, isLoading, error, mutate } = useSWR<HomeUser>(`/api/me`);
 
@@ -31,5 +41,11 @@ export default function useMe() {
       });
     }
   };
-  return { user, isLoading, error, setBookmarks };
+
+  const setFollowings = (followUserId: string, follow: boolean) => {
+    return mutate(updateFollowings(followUserId, follow), {
+      populateCache: false,
+    });
+  };
+  return { user, isLoading, error, setBookmarks, setFollowings };
 }

@@ -20,7 +20,7 @@ export default function UserProfile({ user }: Props) {
     <section className="flex w-full items-center flex-col md:flex-row py-12 border-b border-neutral-300  justify-center">
       <AvatarBadge highlight username={username} size="superLarge" image={image} />
       <div className="md:ml-10 basis-1/3">
-        <div className="flex flex-col md:items-center items-center">
+        <div className="flex flex-col md:flex-row items-center">
           <p className="text-2xl md:mr-8 my-4 md:mb-0">{username}</p>
           <FollowButton user={user} />
         </div>
