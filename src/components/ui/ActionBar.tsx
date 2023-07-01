@@ -15,10 +15,11 @@ import CommentInput from "./CommentInput";
 type Props = {
   post: SimplePost;
   onComment: (comment: Comment) => void;
+  children?: React.ReactNode;
 };
 
-export default function ActionBar({ post, onComment }: Props) {
-  const { likes, username, createdAt, text, id } = post;
+export default function ActionBar({ post, onComment, children }: Props) {
+  const { likes, createdAt, id } = post;
   const { user, setBookmarks } = useMe();
   const like = user ? likes.includes(user.username) : false;
   const bookmark = user ? user.bookmarks.includes(id) : false;
@@ -46,12 +47,7 @@ export default function ActionBar({ post, onComment }: Props) {
       </div>
       <div className="px-4 py-1">
         <p className="font-bold text-sm mb-2">{`${likes?.length ?? 0} ${likes?.length > 1 ? "likes" : "like"}`} </p>
-        {text && (
-          <p>
-            <span className="font-bold">{username}</span>
-            {text}
-          </p>
-        )}
+        {children}
         <p className="text-xs text-neutral-500 uppercase my-2">{parseDate(createdAt)}</p>
       </div>
 

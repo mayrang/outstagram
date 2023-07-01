@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function PostCard({ post, priority = false }: Props) {
-  const { username, userImage, text, createdAt, likes, image, id } = post;
+  const { username, userImage, text, image, comments } = post;
   const [modal, setModal] = useState(false);
   const { addComment } = usePosts();
   const handleComment = (comment: Comment) => {
@@ -43,7 +43,13 @@ export default function PostCard({ post, priority = false }: Props) {
           height={500}
           priority={priority}
         />
-        <ActionBar post={post} onComment={handleComment} />
+        <ActionBar post={post} onComment={handleComment}>
+          <p>
+            <span className="font-bold">{username}</span>
+            {text}
+          </p>
+          {comments > 1 && <div className="font-bold text-sky-500">View all {comments} comments</div>}
+        </ActionBar>
       </article>
     </>
   );

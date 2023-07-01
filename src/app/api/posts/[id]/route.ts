@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
 export async function GET(req: Request, { params: { id } }: { params: { id: string } }) {
+  console.log(id);
   const session = await getServerSession(authOptions);
   const user = session?.user;
   if (!user) {

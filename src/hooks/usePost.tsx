@@ -1,6 +1,7 @@
 import { Comment, FullPost, SimplePost } from "@/model/post";
 import { AuthUser } from "@/model/user";
-import useSWR from "swr";
+import { useCallback } from "react";
+import useSWR, { useSWRConfig } from "swr";
 
 async function updateComment(id: string, comment: string) {
   return fetch("/api/comment", {
@@ -12,22 +13,25 @@ async function updateComment(id: string, comment: string) {
   }).then((res) => res.json());
 }
 export default function usePost(postId: string) {
-  const { data: fullPost, isLoading, error, mutate } = useSWR<FullPost>(`/api/post/${postId}`);
+  const { data: fullPost, isLoading, error, mutate } = useSWR<FullPost>(`/api/posts/${postId}`);
+  const { mutate: glabalMutate } = useSWRConfig();
+  const addComment = useCallback(
+    (comment: Comment) => {
+      if (!fullPost) return;
+      const newfullPost = {
+        ...fullPost,
+        comments: [...fullPost.comments, comment],
+      };
+      console.log(newfullPost);
 
-  const addComment = (comment: Comment) => {
-    if (!fullPost) return;
-    const newfullPost = {
-      ...fullPost,
-      comment: [...fullPost.comments, comment],
-    };
-
-    return mutate(updateComment(fullPost.id, comment.comment), {
-      optimisticData: newfullPost,
-      revalidate: false,
-      rollbackOnError: true,
-      populateCache: false,
-    });
-  };
-
+      return mutate(updateComment(fullPost.id, comment.comment), {
+        optimisticData: newfullPost,
+        revalidate: false,
+        rollbackOnError: true,
+        populateCache: false,
+      }).then(() => glabalMutate("/api/posts"));
+    },
+    [fullPost, mutate]
+  );
   return { fullPost, isLoading, error, addComment };
 }
