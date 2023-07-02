@@ -22,7 +22,6 @@ export default function NewPost({ user }: Props) {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
   const handleDrag = (e: React.DragEvent) => {
-    console.log("123");
     if (e.type === "dragenter") {
       setDragging(true);
     } else if (e.type === "dragleave") {
@@ -31,7 +30,6 @@ export default function NewPost({ user }: Props) {
   };
 
   const handleDragOver = (e: React.DragEvent) => {
-    console.log(1);
     e.preventDefault();
   };
 
@@ -80,10 +78,10 @@ export default function NewPost({ user }: Props) {
     <form
       encType="multipart/form-data"
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl  flex flex-col  items-center"
+      className="w-full max-w-2xl  flex flex-col mt-12  items-center"
     >
       {isLoading && (
-        <div className="absolute inset-0 flex justify-center pt-24 bg-sky-200/20">
+        <div className="absolute inset-0 flex justify-center z-50 pt-24 bg-sky-200/20">
           <GridSpinner />
         </div>
       )}

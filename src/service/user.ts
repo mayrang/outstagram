@@ -25,7 +25,6 @@ export async function createUser({ id, username, name, email, image }: User) {
 
     return result;
   } catch (err) {
-    console.log(err);
     return "에러가 발생했습니다.";
   }
 }
@@ -79,7 +78,6 @@ export async function addBookmarks(userId: string, postId: string) {
 }
 
 export async function removeBookmarks(userId: string, postId: string) {
-  console.log("check");
   return client
     .patch(userId)
     .unset([`bookmarks[_ref=="${postId}"]`])

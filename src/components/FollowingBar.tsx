@@ -10,7 +10,7 @@ import useMe from "@/hooks/useMe";
 
 export default function FollowingBar() {
   const { user, isLoading } = useMe();
-  const followings = user?.followings && [...user.followings, ...user.followings, ...user.followings];
+  const followings = user?.followings && [...user.followings];
 
   return (
     <section className="flex items-center justify-center w-full min-h-[90px]  border shadow-md shadow-neutral-300 rounded-lg mb-4 p-4">

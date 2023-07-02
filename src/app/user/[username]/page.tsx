@@ -20,7 +20,6 @@ export async function generateMetadata({ params: { username } }: Props): Promise
 }
 
 export default async function UserPage({ params: { username } }: Props) {
-  console.log(username);
   const user = await getUser(username);
   if (!user) {
     notFound();

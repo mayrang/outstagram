@@ -26,7 +26,6 @@ export async function getPosts(username: string) {
 }
 
 export async function getPost(postId: string) {
-  console.log(postId);
   return client
     .fetch(
       `*[_type=="post" && _id == "${postId}" ][0]{
@@ -45,20 +44,23 @@ export async function getPost(postId: string) {
 
 export async function getUserPosts(username: string) {
   return client
-    .fetch(`*[_type == "post" && author->username == "${username}"]{${simplePostProjection}}`)
+    .fetch(`*[_type == "post" && author->username == "${username}"]| order(_createdAt desc){${simplePostProjection}}`)
     .then(mapPosts);
 }
 
 export async function getLikedPosts(username: string) {
   return client
-    .fetch(`*[_type == "post" && "${username}" in likes[]->username ]{${simplePostProjection}}`)
+    .fetch(`*[_type == "post" && "${username}" in likes[]->username ]| order(_createdAt desc){${simplePostProjection}}`)
     .then(mapPosts);
 }
 
 export async function getBookmarkedPost(username: string) {
   return client
     .fetch(
-      `*[_type == "post" &&  _id in *[_type == "user" && author->username == "${username}"].bookmarks[]._ref]{${simplePostProjection}}`
+      `*[_type == "post" && _id in *[_type=="user" && username=="${username}"].bookmarks[]._ref]
+    | order(_createdAt desc){
+      ${simplePostProjection}
+    }`
     )
     .then(mapPosts);
 }
@@ -68,7 +70,6 @@ function mapPosts(posts: SimplePost[]) {
 }
 
 export async function addLikes(postId: string, userId: string) {
-  console.log(postId, userId);
   return client
     .patch(postId)
     .setIfMissing({ likes: [] })
@@ -111,7 +112,7 @@ export async function addPost(userId: string, file: Blob, text: string) {
           _type: "post",
           author: { _ref: userId },
           photo: { asset: { _ref: result.document._id } },
-          comment: [
+          comments: [
             {
               content: text,
               author: { _ref: userId, _type: "reference" },

@@ -22,7 +22,6 @@ export default function usePost(postId: string) {
         ...fullPost,
         comments: [...fullPost.comments, comment],
       };
-      console.log(newfullPost);
 
       return mutate(updateComment(fullPost.id, comment.comment), {
         optimisticData: newfullPost,

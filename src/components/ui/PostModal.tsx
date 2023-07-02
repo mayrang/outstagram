@@ -12,7 +12,6 @@ export default function PostModal({ children, onClose }: Props) {
     <section
       className="fixed  top-0 left-0 w-full h-full z-50 flex flex-col justify-center items-center bg-neutral-900/70"
       onClick={(e) => {
-        console.log(e.target, e.currentTarget);
         if (e.target === e.currentTarget) {
           onClose();
         }
