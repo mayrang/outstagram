@@ -32,9 +32,11 @@ export default function Header() {
 
   return (
     <div className="w-full bg-white border-b mx-auto sticky p-4 flex items-center justify-between">
-      <h1 className="font-bold text-3xl">Outstagram</h1>
+      <Link href="/">
+        <h1 className="font-bold text-3xl">Outstagram</h1>
+      </Link>
       <nav>
-        <ul className="flex items-center  gap-4">
+        <ul className="flex items-center gap-4">
           {menu.map(({ path, fillIcon, outlineIcon }) => (
             <li key={path}>
               <NavButton path={path} fillIcon={fillIcon} outlineIcon={outlineIcon} />

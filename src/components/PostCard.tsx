@@ -48,7 +48,11 @@ export default function PostCard({ post, priority = false }: Props) {
             <span className="font-bold">{username}</span>
             {text}
           </p>
-          {comments > 1 && <div className="font-bold text-sky-500">View all {comments} comments</div>}
+          {comments > 1 && (
+            <button onClick={() => setModal(true)}>
+              <div className="font-bold text-sky-500">View all {comments} comments</div>
+            </button>
+          )}
         </ActionBar>
       </article>
     </>
