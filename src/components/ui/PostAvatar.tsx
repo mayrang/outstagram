@@ -9,7 +9,10 @@ type Props = {
 export default function PostAvatar({ image, username }: Props) {
   return (
     <div className="flex items-center gap-2 border-b border-neutral-300 py-3 px-2">
-      <AvatarBadge highlight size="medium" image={image} username={username} />
+      <div className="w-full">
+        <AvatarBadge highlight size="medium" image={image} username={username} />
+      </div>
+
       <h4 className="font-bold">{username}</h4>
     </div>
   );

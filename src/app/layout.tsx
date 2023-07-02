@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Header />
             </div>
           </header>
-          <main className="w-full min-h-full flex justify-center max-w-screen ">
+          <main className="w-full min-h-full flex overflow-auto justify-center max-w-screen ">
             <SWRContext>{children}</SWRContext>
           </main>
         </AuthContext>
